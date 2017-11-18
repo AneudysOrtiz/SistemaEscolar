@@ -1,0 +1,137 @@
+﻿<div class="column is-three-quarters" v-if="activeTab=='Usuarios'">
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h1 class="title">Usuarios</h1>
+            </div>
+           
+        </div>
+
+        <div class="level-right">
+            <div class="level-item">
+                <button class="button is-info is-medium is-outlined"
+                        v-on:click="registrarUsuarioModal=true">
+                    <b-icon pack="fa"
+                            icon="plus">
+                    </b-icon>&nbsp;
+                    NUEVO
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <b-table :data="users" default-sort="UserId">
+        <template scope="props">
+            <b-table-column label="ID" field="UserId" sortable>
+                {{props.row.UserId}}
+            </b-table-column>
+
+            <b-table-column label="Nombre">
+                {{props.row.Name}}
+            </b-table-column>
+
+            <b-table-column label="Apellido">
+                {{props.row.LastName}}
+            </b-table-column>
+
+
+            <b-table-column label="Email">
+                {{props.row.Email}}
+            </b-table-column>
+
+            <b-table-column label="Rol">
+                {{props.row.Rol}}
+            </b-table-column>
+
+            <b-table-column label="Accion">
+                <button class="button is-warning">
+                    <i class="fa fa-pencil"></i>
+                </button>
+
+                <button class="button is-danger">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </b-table-column>
+
+        </template>
+    </b-table>
+
+
+
+    <b-modal :active.sync="registrarUsuarioModal">
+        <div class="modal-card" style="width:500px">
+            <form action="">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Nuevo Usuario</p>
+                    <button class="delete" v-on:click.prevent="cerrarAdminModal()" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+
+
+                    <b-field>
+                        <b-input type="text" v-model="usuario.Name" placeholder="Nombre" required style="margin-bottom:10px"></b-input>
+                    </b-field>
+
+                    <b-field>
+                        <b-input type="text" v-model="usuario.LastName"  placeholder="Apellido" style="margin-bottom:10px"></b-input>
+
+                    </b-field>
+
+                    <b-field>
+                        <b-radio type="text" v-model="usuario.Sexo" native-value="Masculino">Masculino</b-radio>
+
+                        <b-radio type="text" v-model="usuario.Sexo" native-value="Femenino">Femenino</b-radio>
+                    </b-field>
+
+                    <b-field>
+                        <b-input type="email" v-model="usuario.Email" placeholder="Email" style="margin-bottom:10px"></b-input>
+
+                    </b-field>
+
+                    <b-field>
+                        <b-input type="text" v-model="usuario.Telefono" placeholder="Telefono" style="margin-bottom:10px"></b-input>
+
+                    </b-field>
+                    
+                    <b-field>
+                        <b-input type="textarea" v-model="usuario.Direccion" placeholder="Direccion" style="margin-bottom:10px"></b-input>
+
+                    </b-field>
+
+                    <b-field>
+                        <b-select v-model="usuario.Rol" placeholder="Rol">
+                            <option value="Student">Estudiante</option>
+                            <option value="Teacher">Profesor</option>
+                            <option value="Employee"> Administrativo</option>
+                        </b-select>
+                    </b-field>
+
+                    <b-field>
+                        <b-upload v-model="tmpFiles" id="imagen" accept=".jpg,.png,.jpeg,.gif">
+                            <a class="button is-default">
+                                &nbsp;
+                                <i class="fa fa-upload"></i>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;Subir imagen</span>
+                            </a>
+                        </b-upload>
+
+                        <div v-if="tmpFiles && tmpFiles.length">
+                            <span class="file-name">
+                                {{ tmpFiles[0].name }}
+                            </span>
+                        </div>
+
+                    </b-field>
+
+                </section>
+                <footer class="modal-card-foot">
+                    <button v-on:click.prevent="guardarUsuario()" type="button" class="button is-info"><i class="fa fa-check"></i>&nbsp;Guardar</button>
+                    <button v-on:click.prevent="cerrarAdminModal()" class="button"><i class="fa fa-close"></i>&nbsp;Cancelar</button>
+                </footer>
+            </form>
+        </div>
+    </b-modal>
+
+</div>

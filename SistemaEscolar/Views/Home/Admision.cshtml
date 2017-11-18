@@ -1,0 +1,202 @@
+﻿<div class="column is-three-quarters" v-if="activeTab=='Admision'">
+
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="title">Admisiones</p>
+            </div>
+        </div>
+
+        <div class="level-right">
+            <div class="level-item">
+                <button class="button is-medium is-primary" v-bind:disabled="!admisionEmpty" v-on:click="admisionModal=true">Solicitar</button>
+            </div>
+        </div>
+    </nav>
+
+    <b-message type="is-danger" has-icon v-if="admisionEmpty">
+        Aun no has solicitado admision, que esperas?
+    </b-message>
+
+   
+    <div v-for="item in admision">
+        <b-field label="ID Solicitud" style="margin-bottom:25px">
+            <b-tag size="is-large">
+                {{item.AdmissionId}}
+            </b-tag>
+        </b-field>
+
+        <b-field label="Fecha solicitud" style="margin-bottom:25px">
+            <b-tag size="is-large">
+                {{item.Date | dateFilter}}
+            </b-tag>            
+        </b-field >
+
+
+        <div class="columns" style="margin-bottom:25px">
+            <div class="column is-2">
+                <b-field label="Foto 2x2">
+                    <a class="button is-warning is-large" :href="src+item.Foto" target="_blank">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                </b-field>
+            </div>
+
+
+            <div class="column is-2">
+                <b-field label="Acta de nacimiento">
+                    <a class="button is-warning is-large" :href="src+item.ActaNacimiento" target="_blank">
+                        <i class="fa fa-address-card-o"></i>
+                    </a>
+                </b-field>
+            </div>
+
+            <div class="column is-2">
+                <b-field label="Record de Notas">
+                    <a class="button is-warning is-large" :href="src+item.RecordNotas" target="_blank">
+                        <i class="fa fa-bar-chart"></i>
+                    </a>
+                </b-field>
+            </div>
+
+            <div class="column is-2">
+                <b-field label="Carta Saldo">
+                    <a class="button is-warning is-large" :href="src+item.CartaSaldo" target="_blank">
+                        <i class="fa fa-envelope-o"></i>
+                    </a>
+                </b-field>
+            </div>
+
+            <div class="column">
+                <b-field label="Carta Buena Conducta">
+                    <a class="button is-warning is-large" :href="src+item.BuenaConducta" target="_blank">
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                </b-field>
+            </div>
+
+           
+
+        </div>
+
+        <b-field label="Estatus Solicitud">
+            <b-tag size="is-large">
+                {{item.Status | statusFilter}}
+            </b-tag>            
+        </b-field>
+
+        <b-field>
+            <progress class="progress is-primary" :value="item.Status" max="3">33%</progress>
+        </b-field>
+
+        <div class="columns">
+            <div class="column">Solicitada</div>
+            <div class="column">En Verificacion</div>
+            <div class="column">Concluida</div>
+
+
+        </div>
+
+    </div>
+  
+
+   
+    <b-modal :active.sync="admisionModal">
+        <div class="modal-card" >
+            <form action="">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Solicitud de Admision</p>
+                    <button class="delete" v-on:click.prevent="cerrarAdmision()" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+
+                    <b-field class="has-text-centered">
+                        <b-tag size="is-large">
+                            <p><b>Fecha de Registro:</b> {{nuevaAdmision.Date | dateFilter}}</p>
+                        </b-tag>
+                    </b-field>
+                    
+
+                    
+
+                    <b-field >
+                        <b-upload accept=".jpg, .pdf, .gif, .png" v-model="acta">
+                            <a class="button is-warning" style="width:223.5px">
+                                
+                                <span>Acta de nacimiento</span>
+                            </a>
+                        </b-upload>
+                        <div v-if="acta && acta.length">
+                            <span class="file-name">
+                                {{ acta[0].name }}
+                            </span>
+                        </div>
+                    </b-field>
+
+                    <b-field>
+                        <b-upload accept=".jpg, .pdf, .gif, .png" v-model="foto" >
+                            <a class="button is-warning" style="width:223.5px">
+                                
+                                <span>Foto 2x2</span>
+                            </a>
+                        </b-upload>
+                        <div v-if="foto && foto.length">
+                            <span class="file-name">
+                                {{ foto[0].name }}
+                            </span>
+                        </div>
+                    </b-field>
+                    
+                    <b-field>
+                        <b-upload accept=".jpg, .pdf, .gif, .png" v-model="record">
+                            <a class="button is-warning" style="width:223.5px">
+                                
+                                <span>Record de Notas</span>
+                            </a>
+                        </b-upload>
+                        <div v-if="record && record.length">
+                            <span class="file-name">
+                                {{ record[0].name }}
+                            </span>
+                        </div>
+                    </b-field>
+
+                    <b-field>
+                        <b-upload accept=".jpg, .pdf, .gif, .png" v-model="conducta">
+                            <a class="button is-warning" style="width:223.5px">
+                                
+                                <span>Carta de Buena conducta</span>
+                            </a>
+                        </b-upload>
+                        <div v-if="conducta && conducta.length">
+                            <span class="file-name">
+                                {{ conducta[0].name }}
+                            </span>
+                        </div>
+                    </b-field>
+
+                    <b-field>
+                        <b-upload accept=".jpg, .pdf, .gif, .png" v-model="saldo">
+                            <a class="button is-warning" style="width:223.5px; text-align:left">
+                                
+                                <span>Carta de Saldo</span>
+                            </a>
+                        </b-upload>
+                        <div v-if="saldo && saldo.length">
+                            <span class="file-name">
+                                {{ saldo[0].name }}
+                            </span>
+                        </div>
+                    </b-field>
+
+
+                </section>
+                <footer class="modal-card-foot">
+                    <button v-on:click.prevent="guardarAdmision()" type="button" class="button is-info"><i class="fa fa-check"></i>&nbsp;Guardar</button>
+                    <button v-on:click.prevent="cerrarAdmision()" class="button"><i class="fa fa-close"></i>&nbsp;Cancelar</button>
+                </footer>
+            </form>
+        </div>
+    </b-modal>
+
+</div>

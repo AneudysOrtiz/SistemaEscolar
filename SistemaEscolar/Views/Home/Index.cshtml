@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Sistema Escolar";
+}
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<link href="~/Content/buefy.css" rel="stylesheet" />
+<script src="~/Scripts/buefy.js"></script>
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/axios.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+
+
+<div id="app-home" class="columns">
+    <b-loading :active.sync="isLoading"></b-loading>
+
+    <div class="column is-one-quarter">
+        <aside class="menu">
+            <p class="menu-label">
+                inicio
+            </p>
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Dashboard'" v-bind:class="{ 'is-active': activeTab=='Dashboard' }"><i class="fa fa-dashboard"></i>&nbsp;&nbsp; Dashboard</a></li>
+
+            </ul>
+
+            <p class="menu-label">
+                academico
+            </p>
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Admision', getMyAdmission()" v-bind:class="{ 'is-active': activeTab=='Admision' }"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Admision</a></li>
+            </ul>
+
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Inscripcion'" v-bind:class="{ 'is-active': activeTab=='Inscripcion' }"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp; Inscripcion</a></li>
+            </ul>
+
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Seleccion'" v-bind:class="{ 'is-active': activeTab=='Seleccion' }"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp; Seleccion de materias</a></li>
+            </ul>
+
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Calificaciones'" v-bind:class="{ 'is-active': activeTab=='Calificaciones' }"><i class="fa fa-book"></i>&nbsp;&nbsp; Calificaciones</a></li>
+            </ul>
+           
+            <p class="menu-label">
+                caja
+            </p>
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Pagos'" v-bind:class="{ 'is-active': activeTab=='Pagos' }"><i class="fa fa-money"></i>&nbsp;&nbsp; Pagos</a></li>
+            </ul>
+
+            <p class="menu-label">
+                Configuracion
+            </p>
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='MiCuenta'" v-bind:class="{ 'is-active': activeTab=='MiCuenta' }"><i class="fa fa-user"></i>&nbsp;&nbsp; Mi Cuenta</a></li>
+
+            </ul>
+        </aside>
+    </div>
+
+    @Html.Partial("Dashboard")
+
+    @Html.Partial("Admision")
+
+    @Html.Partial("MiCuenta")
+
+</div>
+
+<script>
+    Vue.use(Buefy.default, {
+            defaultIconPack: 'fa',
+        })
+</script>
+<script src="~/Scripts/components/home.js"></script>
+

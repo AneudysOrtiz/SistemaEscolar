@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Sistema Escolar";
+}
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<link href="~/Content/buefy.css" rel="stylesheet" />
+<script src="~/Scripts/buefy.js"></script>
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/axios.js"></script>
+
+<div id="app-admin" class="columns">
+    <b-loading :active.sync="isLoading" ></b-loading>
+
+    <div class="column is-one-quarter">
+        <aside class="menu">
+            <p class="menu-label">
+                inicio
+            </p>
+            <ul class="menu-list">
+                <li><a v-on:click="activeTab='Dashboard'" v-bind:class="{ 'is-active': activeTab=='Dashboard' }">Dashboard</a></li>
+                
+            </ul>
+            <p class="menu-label">
+                Administracion
+            </p>
+            <ul class="menu-list">
+                <li>
+                    <a v-on:click="activeTab='Usuarios'" v-bind:class="{ 'is-active': activeTab=='Usuarios' }">Usuarios</a>
+                </li>
+
+                @*<li>
+                    <a v-on:click="show=!show">Manage Your Team</a>
+                    <ul v-if="show">
+                        <li><a>Members</a></li>
+                        <li><a>Plugins</a></li>
+                        <li><a>Add a member</a></li>
+                    </ul>
+                </li>
+                <li><a>Invitations</a></li>
+                <li><a>Cloud Storage Environment Settings</a></li>
+                <li><a>Authentication</a></li>*@
+            </ul>
+            <p class="menu-label">
+                Configuracion
+            </p>
+            <ul class="menu-list">
+                <li><a>Mi Cuenta</a></li>
+               
+            </ul>
+        </aside>
+    </div>
+
+    @Html.Partial("Dashboard")
+
+    @Html.Partial("Usuarios")
+
+
+</div>
+
+<script>
+    Vue.use(Buefy.default, {
+            defaultIconPack: 'fa',
+        })
+</script>
+<script src="~/Scripts/components/admin.js"></script>

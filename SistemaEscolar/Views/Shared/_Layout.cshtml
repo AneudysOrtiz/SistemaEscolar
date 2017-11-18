@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    
+          @Scripts.Render("~/bundles/modernizr")
+         <link href="~/Content/buefy.css" rel="stylesheet" />
+          @Styles.Render("~/Content/font-awesome.css")
+             @Styles.Render("~/Content/font-awesome.min.css")
+            <script src="~/Scripts/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+      <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+              <a class="navbar-item" href="">
+                  Sistema Escolar
+              </a>
+              <button class="button navbar-burger">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+              </button>
+          </div>
+          <div class="nav-right nav-menu">
+              <a class="nav-item "><p class="has-text-white" v-if="user.Name!=null">Hola! {{user.Name}}</p></a>
+              <a class="nav-item" v-on:click="logOut"><span class="icon is-medium is-white"><i class="fa fa-sign-out" aria-hidden="true"></i></span></a>
+          </div>
+      </nav>
+  </div>
+   
+
+    <div class="section" style="padding:1rem 1.5rem">
+        @RenderBody()
+       
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/axios")
+    @RenderSection("scripts", required: false)
+
+
+    <script>
+        var v = new Vue({
+            el:"#app",
+            data: {
+                user:JSON.parse(sessionStorage.getItem('user'))
+
+            },
+        mounted:function(){
+
+            if(this.user==null){
+            window.location.href='/Login';
+                }
+
+        var url=window.location.pathname.split("/");
+        console.log(url);
+
+        if(this.user.Url!=url[1]){
+
+            window.location.href='/Forbidden';
+        }
+        },
+            methods: {
+
+                logOut(){
+
+                    sessionStorage.removeItem('user');
+                    window.location.href = "/Login";
+                }
+            }
+
+        })
+
+    </script>
+
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,21 @@
+﻿<div class="column is-three-quarters" v-if="activeTab=='Inscripcion'">
+
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="title">Admisiones</p>
+            </div>
+        </div>
+
+        <div class="level-right">
+            <div class="level-item">
+                <button class="button is-medium is-primary" v-bind:disabled="!inscripcionEmpty" v-on:click="inscripcionModal=true">Solicitar</button>
+            </div>
+        </div>
+    </nav>
+
+    <b-message type="is-danger" has-icon v-if="inscripcionEmpty">
+        Aun no estas inscrito.
+    </b-message>
+
+    </div>

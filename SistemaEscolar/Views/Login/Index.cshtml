@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+
+@Styles.Render("~/Content/Login.css")
+<script src="~/Scripts/vue.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/axios.js"></script>
+<link href="~/Content/buefy.css" rel="stylesheet" />
+<script src="~/Scripts/buefy.js"></script>
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<script src="~/Scripts/axios.js"></script>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Inicie Sesion</title>
+</head>
+<body>
+
+    <nav class="navbar is-black" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">Sistema Escolar</a>
+
+            <button class="button navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+    
+  
+
+    <div class="container" id="register">
+
+        <b-loading :active.sync="isLoading"></b-loading>
+
+        <div class="login-container">
+            <h2 class="title">Bienvenido</h2>
+            
+            <div class="avatar"><img src="~/Content/person.png" style="height:99px; width:99px;" /></div>
+            <div class="form-box">
+
+                <b-field>
+                    <b-input type="email" v-model="email"  placeholder="Email"></b-input>
+
+                </b-field>
+               
+                <b-field>
+                    <input class="input" type="password" v-model="password"  placeholder="Contraseña" v-on:keyup.enter="enviar">
+
+                </b-field>
+               
+                <button class="button is-info" v-on:click="enviar">Enviar</button>
+
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column"></div>
+            <div class="column">
+                <div class="notification is-danger has-text-centered" v-if="failed">
+
+                    {{errorMessage}}
+                </div>
+            </div>
+            <div class="column"></div>
+        </div>
+        
+
+        <p style="text-align:center">Si no tienes cuenta <a href="@Url.Action("Register", "Login")">Registrate</a></p>
+    </div>
+
+
+    <footer style="text-align:center">
+        <p> &copy; @DateTime.Now.Year - Sistema Escolar</p>
+    </footer>
+
+
+    <script>
+        Vue.use(Buefy.default, {
+            defaultIconPack: 'fa',
+        })
+
+        var App = new Vue({
+            el: '#register',
+            data: {
+                email: null,
+                password: null,
+                isLoading: false,
+                errorMessage: 'Email o contraseña no validos',
+                failed:false
+
+            },
+            methods: {
+                enviar() {
+                    var that = this;
+                    if (this.email != null && this.password != null) {
+
+                        this.isLoading = true;
+                        var model = {
+                            Email: this.email,
+                            grant_type: 'password',
+                            Password: this.password
+
+                        };
+
+                        axios.post('/api/Account/Login', model)
+                            .then(function (response) {
+                                var res = response.data;
+                                console.log(response)
+
+                                that.failed = false;
+                                sessionStorage.setItem('user', JSON.stringify(response.data));
+                                var obj = JSON.parse(sessionStorage.getItem('user'));
+
+                                var url = '/'+res.Url;
+                                console.log(url);
+                                window.location.href = url;
+
+                            }).catch(function (error) {
+                                console.log(error)
+                                that.isLoading = false;
+                                that.failed = true;
+                            })
+
+                    } else {
+                        this.$toast.open({
+                            message: 'Debe completar todos los campos',
+                            type:'is-danger'
+                        })
+                    }
+                }
+            }
+        })
+
+
+
+    </script>
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+</body>
+</html>
